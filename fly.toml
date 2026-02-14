@@ -1,33 +1,23 @@
-app = "sniproxy"
-primary_region = "nrt"
+# fly.toml app configuration file generated for app-frosty-frog-5717 on 2026-02-14T13:16:11Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-auto_stop_machines = true
-auto_start_machines = true
+app = 'app-frosty-frog-5717'
+primary_region = 'iad'
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[vm]]
-  cpu_kind = "shared"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 256
-
-[[services]]
-  internal_port = 80
-  protocol = "tcp"
-  handlers = ["http"]
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-
-[[services]]
-  internal_port = 443
-  protocol = "tcp"
-  handlers = ["tls", "http"]
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
-
-[checks]
-  type = "http"
-  path = "/"
-  interval = "10s"
-  timeout = "2s"
-  start_period = "5s"
