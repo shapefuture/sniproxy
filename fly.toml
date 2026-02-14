@@ -1,0 +1,33 @@
+app = "sniproxy"
+primary_region = "nrt"
+
+auto_stop_machines = true
+auto_start_machines = true
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
+
+[[services]]
+  internal_port = 80
+  protocol = "tcp"
+  handlers = ["http"]
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+[[services]]
+  internal_port = 443
+  protocol = "tcp"
+  handlers = ["tls", "http"]
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+[checks]
+  type = "http"
+  path = "/"
+  interval = "10s"
+  timeout = "2s"
+  start_period = "5s"
