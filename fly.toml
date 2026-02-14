@@ -1,33 +1,40 @@
-app = "sniproxy"
-primary_region = "nrt"
+app = 'sniproxy'
+primary_region = 'nrt'
 
-auto_stop_machines = true
-auto_start_machines = true
+[build]
+dockerfile = 'Dockerfile'
 
 [[vm]]
-  cpu_kind = "shared"
-  cpus = 1
-  memory_mb = 256
+memory = '1gb'
+memory_mb = 256
+cpu_kind = 'shared'
+cpus = 1
 
 [[services]]
-  internal_port = 80
-  protocol = "tcp"
-  handlers = ["http"]
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
+internal_port = 80
+protocol = 'tcp'
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 1
+
+[[services.ports]]
+port = 80
+handlers = ['http']
 
 [[services]]
-  internal_port = 443
-  protocol = "tcp"
-  handlers = ["tls", "http"]
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
+internal_port = 443
+protocol = 'tcp'
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 1
 
-[checks]
-  type = "http"
-  path = "/"
-  interval = "10s"
-  timeout = "2s"
-  start_period = "5s"
+[[services.ports]]
+port = 443
+handlers = ['tls', 'http']
+
+[[services.checks]]
+type = 'http'
+path = '/'
+interval = '10s'
+timeout = '2s'
+grace_period = '5s'
